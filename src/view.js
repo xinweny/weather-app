@@ -3,16 +3,20 @@ const View = (() => {
     return document.querySelector(selector);
   }
 
-  const e = {
+  const _e = {
     content: _getElement('#content'),
     searchInput: _getElement('input[name="location"]'),
-    searchBtn: _getElement('#submitBtn'),
+    searchBtn: _getElement('#submit-btn'),
   };
 
   function bindSearchButton(handler) {
-    e.searchBtn.addEventListener('click', () => {
-      const query = e.searchInput.value;
-      const data = handler(query);
+    _e.searchBtn.addEventListener('click', () => {
+      const query = _e.searchInput.value;
+      handler(query)
+        .then((resolved, rejected) => {
+					console.log(resolved)
+				});
+
     });
   }
 
