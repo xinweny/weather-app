@@ -1,3 +1,7 @@
 import './style.css';
 
-console.log("hi");
+async function test() {
+  console.log('hi');
+}
+
+test();
