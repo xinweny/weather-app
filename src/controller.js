@@ -61,8 +61,18 @@ const Controller = (() => {
     return (geoObj instanceof Error) ? geoObj : _getWeather(geoObj);
   }
 
-  function convertTemperatures(unit) {
+  function convertTemperatures(tempElements, unit) {
     Model.unit = unit;
+    const converter = (unit === 'metric') ? Model.farenheitToCelsius : Model.celsiusToFarenheit;
+
+    const newTemps = tempElements.map((e) => {
+      const oldTemp = Number(e.textContent.slice(0, -2));
+      const newTemp = converter(oldTemp);
+
+      return newTemp;
+    });
+
+    return newTemps;
   }
 
   return {

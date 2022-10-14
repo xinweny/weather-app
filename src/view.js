@@ -20,6 +20,10 @@ const View = (() => {
     setText(element, text) { this[element].textContent = text; },
   };
 
+	function _getUnitSymbol(unit) {
+		return (unit === 'metric') ? 'C' : 'F';
+	}
+
   function bindSearchForm(handler) {
     _e.searchForm.addEventListener('submit', (event) => {
 			event.preventDefault();
@@ -27,6 +31,7 @@ const View = (() => {
       handler(query)
         .then((data, rejected) => {
           if (data) {
+						_e.searchInput.textContent = '';
             console.log(data);
 
             _e.setText('location', `${data.city_name}, ${data.sys.country_name}`);
@@ -35,7 +40,7 @@ const View = (() => {
             _e.setText('localTime', format(data.local_time, 'h:mm aaa'));
             _e.setText('localDate', format(data.local_time, 'iii do MMM yyyy'));
 
-						const unit = (data.main.temp_unit === 'metric') ? 'C' : 'F';
+						const unit = _getUnitSymbol(data.main.temp_unit);
             _e.setText('currentTemp', `${Math.round(data.main.temp)}º${unit}`);
           } else {
             console.log(rejected);
@@ -47,14 +52,18 @@ const View = (() => {
 	function bindToggleButton(handler) {
 		_e.toggleBtn.addEventListener('click', () => {
 			_e.toggleBtn.classList.toggle('celsius');
-
-			const tempElements = document.querySelectorAll('.temp');
-			const unit = (_e.toggleBtn.classList.contains('celsius')) ? 'metric' : 'imperial';
-
-			handler(unit);
-
 			for (const label of _e.toggleBtn.querySelectorAll('span')) {
 				label.classList.toggle('bolded');
+			}
+
+			const tempElements = Array.from(document.querySelectorAll('.temp'));
+			const unit = (_e.toggleBtn.classList.contains('celsius')) ? 'metric' : 'imperial';
+			const unitSymbol = _getUnitSymbol(unit);
+
+			const newTemps = handler(tempElements, unit);
+			for (let i = 0; i < tempElements.length; i += 1) {
+				const newTemp = Math.round(newTemps[i]);
+				tempElements[i].textContent = `${newTemp}º${unitSymbol}`;
 			}
 		});
 	}
