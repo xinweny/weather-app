@@ -29,6 +29,20 @@ const View = (() => {
 
 	const _formatTemp = (temp, unit) => `${Math.round(temp)}º${unit}`;
 
+	function displayData(data) {
+		const unitSymbol = _getUnitSymbol(data.main.temp_unit);
+
+		_e.setText('location', `${data.city_name}, ${data.sys.country_name}`);
+		_e.setText('weather', data.weather[0].main);
+		_e.setText('weatherDesc', data.weather[0].description);
+		_e.setText('localTime', format(data.local_time, 'h:mm aaa'));
+		_e.setText('localDate', format(data.local_time, 'iii do MMM yyyy'));
+		_e.setText('currentTemp', _formatTemp(data.main.temp, unitSymbol));
+		_e.setText('feelsLike', _formatTemp(data.main.feels_like, unitSymbol));
+		_e.setText('humidity', `${data.main.humidity}%`);
+		_e.setText('windSpeed', `${data.wind.speed} ${(unitSymbol === 'C') ? 'km/h' : 'mph'}`);
+	}
+
   function bindSearchForm(handler) {
     _e.searchForm.addEventListener('submit', (event) => {
 			event.preventDefault();
@@ -36,19 +50,9 @@ const View = (() => {
       handler(query)
         .then((data, rejected) => {
           if (data) {
+						console.log(data);
 						_e.searchInput.textContent = '';
-						const unitSymbol = _getUnitSymbol(data.main.temp_unit);
-            console.log(data);
-
-            _e.setText('location', `${data.city_name}, ${data.sys.country_name}`);
-            _e.setText('weather', data.weather[0].main);
-            _e.setText('weatherDesc', data.weather[0].description);
-            _e.setText('localTime', format(data.local_time, 'h:mm aaa'));
-            _e.setText('localDate', format(data.local_time, 'iii do MMM yyyy'));
-            _e.setText('currentTemp', _formatTemp(data.main.temp, unitSymbol));
-						_e.setText('feelsLike', _formatTemp(data.main.feels_like, unitSymbol));
-						_e.setText('humidity', `${data.main.humidity}%`);
-						_e.setText('windSpeed', `${data.wind.speed} ${(unitSymbol === 'C') ? 'km/h' : 'mph'}`);
+						displayData(data);
           } else {
             console.log(rejected);
           }
@@ -75,6 +79,7 @@ const View = (() => {
 	}
 
   return {
+		displayData,
     bindSearchForm,
 		bindToggleButton,
   };
