@@ -4,6 +4,15 @@ import View from './view';
 const Controller = (() => {
   const _apiKey = '0faae275e2541631025d0daa0d952735';
 
+  function _getLocalDateTime(timezone) {
+    const date = new Date();
+    const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+
+    const localTime = utc + (timezone * 1000);
+
+    return new Date(localTime);
+  }
+
   async function _getApiResponseData(queryURL) {
     try {
       const response = await fetch(queryURL, { mode: 'cors' });
@@ -11,7 +20,9 @@ const Controller = (() => {
 
       return result;
     } catch (error) {
+      console.error(error);
 
+      return error;
     }
   }
 
@@ -21,7 +32,9 @@ const Controller = (() => {
 
       return data[0];
     } catch (error) {
+      console.log(`No cities found for '${city}'`);
 
+      return error;
     }
   }
 
@@ -29,23 +42,22 @@ const Controller = (() => {
     try {
       const data = await _getApiResponseData(`https://api.openweathermap.org/data/2.5/weather?lat=${geoObj.lat}&lon=${geoObj.lon}&appid=${_apiKey}`);
 
-      data.cityName = geoObj.name;
+      data.cityname = geoObj.name;
+      data.localtime = _getLocalDateTime(data.timezone);
 
       return data;
     } catch (error) {
+      console.log(`Weather data found for '${geoObj.cityname}'`);
 
+      return error;
     }
   }
 
   async function searchWeatherAPI(query) {
-    try {
-      const geoObj = await _getGeocode(query);
-      const weatherObj = await _getWeather(geoObj);
+    const geoObj = await _getGeocode(query);
+    const weatherObj = await _getWeather(geoObj);
 
-      return weatherObj;
-    } catch (error) {
-
-    }
+    return weatherObj;
   }
 
   return {
