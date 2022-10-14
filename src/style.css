@@ -14,3 +14,7 @@ a {
 	display: grid;
 	grid-template-rows: auto 1fr auto;
 }
+
+.bolded {
+	font-weight: bold;
+}

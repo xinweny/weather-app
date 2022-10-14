@@ -1,14 +1,14 @@
-/* eslint-disable no-underscore-dangle */
-import View from './view';
+import Model from './model';
 
 const Controller = (() => {
   const _apiKey = '0faae275e2541631025d0daa0d952735';
+  const _regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
-  function _getLocalDateTime(timezone) {
+  function _getLocalDateTime(offset) {
     const date = new Date();
     const utc = date.getTime() + date.getTimezoneOffset() * 60000;
 
-    const localTime = utc + (timezone * 1000);
+    const localTime = utc + (offset * 1000);
 
     return new Date(localTime);
   }
@@ -20,8 +20,6 @@ const Controller = (() => {
 
       return result;
     } catch (error) {
-      console.error(error);
-
       return error;
     }
   }
@@ -30,24 +28,28 @@ const Controller = (() => {
     try {
       const data = await _getApiResponseData(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${_apiKey}`);
 
-      return data[0];
+      if (data.length === 0) {
+        throw new Error(`No cities found for '${city}'.`);
+      } else {
+        return data[0];
+      }
     } catch (error) {
-      console.log(`No cities found for '${city}'`);
-
       return error;
     }
   }
 
   async function _getWeather(geoObj) {
     try {
-      const data = await _getApiResponseData(`https://api.openweathermap.org/data/2.5/weather?lat=${geoObj.lat}&lon=${geoObj.lon}&appid=${_apiKey}`);
+      const data = await _getApiResponseData(`https://api.openweathermap.org/data/2.5/weather?lat=${geoObj.lat}&lon=${geoObj.lon}&units=${Model.unit}&appid=${_apiKey}`);
 
-      data.cityname = geoObj.name;
-      data.localtime = _getLocalDateTime(data.timezone);
+      data.city_name = geoObj.name;
+      data.local_time = _getLocalDateTime(data.timezone);
+      data.sys.country_name = _regionNames.of(data.sys.country);
+      data.main.temp_unit = Model.unit;
 
       return data;
     } catch (error) {
-      console.log(`Weather data found for '${geoObj.cityname}'`);
+      console.log(`No weather data found for '${geoObj.name}'`);
 
       return error;
     }
@@ -55,13 +57,17 @@ const Controller = (() => {
 
   async function searchWeatherAPI(query) {
     const geoObj = await _getGeocode(query);
-    const weatherObj = await _getWeather(geoObj);
 
-    return weatherObj;
+    return (geoObj instanceof Error) ? geoObj : _getWeather(geoObj);
+  }
+
+  function convertTemperatures(unit) {
+    Model.unit = unit;
   }
 
   return {
     searchWeatherAPI,
+    convertTemperatures,
   };
 })();
 

@@ -4,5 +4,6 @@ import View from './view';
 import './style.css';
 
 (() => {
-  View.bindSearchButton(Controller.searchWeatherAPI);
+  View.bindSearchForm(Controller.searchWeatherAPI);
+	View.bindToggleButton(Controller.convertTemperatures);
 })();
