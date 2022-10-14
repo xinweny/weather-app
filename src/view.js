@@ -16,6 +16,9 @@ const View = (() => {
     localTime: _getElement('#local-time'),
     localDate: _getElement('#local-date'),
     currentTemp: _getElement('#current-temperature'),
+		feelsLike: _getElement('#feels-like'),
+		humidity: _getElement('#humidity'),
+		windSpeed: _getElement('#wind-speed'),
 
     setText(element, text) { this[element].textContent = text; },
   };
@@ -23,6 +26,8 @@ const View = (() => {
 	function _getUnitSymbol(unit) {
 		return (unit === 'metric') ? 'C' : 'F';
 	}
+
+	const _formatTemp = (temp, unit) => `${Math.round(temp)}º${unit}`;
 
   function bindSearchForm(handler) {
     _e.searchForm.addEventListener('submit', (event) => {
@@ -32,6 +37,7 @@ const View = (() => {
         .then((data, rejected) => {
           if (data) {
 						_e.searchInput.textContent = '';
+						const unitSymbol = _getUnitSymbol(data.main.temp_unit);
             console.log(data);
 
             _e.setText('location', `${data.city_name}, ${data.sys.country_name}`);
@@ -39,9 +45,10 @@ const View = (() => {
             _e.setText('weatherDesc', data.weather[0].description);
             _e.setText('localTime', format(data.local_time, 'h:mm aaa'));
             _e.setText('localDate', format(data.local_time, 'iii do MMM yyyy'));
-
-						const unit = _getUnitSymbol(data.main.temp_unit);
-            _e.setText('currentTemp', `${Math.round(data.main.temp)}º${unit}`);
+            _e.setText('currentTemp', _formatTemp(data.main.temp, unitSymbol));
+						_e.setText('feelsLike', _formatTemp(data.main.feels_like, unitSymbol));
+						_e.setText('humidity', `${data.main.humidity}%`);
+						_e.setText('windSpeed', `${data.wind.speed} ${(unitSymbol === 'C') ? 'km/h' : 'mph'}`);
           } else {
             console.log(rejected);
           }
@@ -62,8 +69,7 @@ const View = (() => {
 
 			const newTemps = handler(tempElements, unit);
 			for (let i = 0; i < tempElements.length; i += 1) {
-				const newTemp = Math.round(newTemps[i]);
-				tempElements[i].textContent = `${newTemp}º${unitSymbol}`;
+				tempElements[i].textContent = _formatTemp(newTemps[i], unitSymbol);
 			}
 		});
 	}
