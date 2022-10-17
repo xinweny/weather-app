@@ -1,14 +1,15 @@
 import Model from './model';
 
 const Controller = (() => {
-  async function searchWeatherAPI(query) {
+  async function searchAPIWeather(query) {
     const geoObj = await Model.getGeocode(query);
 
     return (geoObj instanceof Error) ? geoObj : Model.getWeather(geoObj);
   }
 
   function convertTemperatures(tempElements, unit) {
-    Model.unit = unit;
+    Model.setUnit(unit);
+
     const converter = (unit === 'metric') ? Model.farenheitToCelsius : Model.celsiusToFarenheit;
 
     const newTemps = tempElements.map((e) => {
@@ -22,7 +23,7 @@ const Controller = (() => {
   }
 
   return {
-    searchWeatherAPI,
+    searchAPIWeather,
     convertTemperatures,
   };
 })();

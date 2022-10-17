@@ -1,10 +1,14 @@
 const Model = (() => {
-	const _apiKey = '0faae275e2541631025d0daa0d952735';
-	let unit = 'metric';
+  const _apiKey = '0faae275e2541631025d0daa0d952735';
+  let _unit = 'metric';
 
   const celsiusToFarenheit = (temp) => (9 / 5) * temp + 32;
 
   const farenheitToCelsius = (temp) => (5 / 9) * (temp - 32);
+
+  function setUnit(unit) {
+    _unit = unit;
+  }
 
   function _getLocalDateTime(offset) {
     const date = new Date();
@@ -30,11 +34,9 @@ const Model = (() => {
     try {
       const data = await _getApiResponseData(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${_apiKey}`);
 
-      if (data.length === 0) {
-        throw new Error(`No cities found for '${city}'.`);
-      } else {
-        return data[0];
-      }
+      if (data.length === 0) return Promise.reject(new Error(`No cities found for '${city}'.`));
+
+      return data[0];
     } catch (error) {
       return error;
     }
@@ -42,13 +44,14 @@ const Model = (() => {
 
   async function getWeather(geoObj) {
     try {
-      const data = await _getApiResponseData(`https://api.openweathermap.org/data/2.5/weather?lat=${geoObj.lat}&lon=${geoObj.lon}&units=${Model.unit}&appid=${_apiKey}`);
+      const data = await _getApiResponseData(`https://api.openweathermap.org/data/3.0/onecall?lat=${geoObj.lat}&lon=${geoObj.lon}&units=${_unit}&appid=${_apiKey}`);
 
       data.city_name = geoObj.name;
-      data.local_time = _getLocalDateTime(data.timezone);
-			const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
-      data.sys.country_name = regionNames.of(data.sys.country);
-      data.main.temp_unit = Model.unit;
+      data.local_time = _getLocalDateTime(data.timezone_offset);
+      const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+      data.country_name = regionNames.of(geoObj.country);
+      data.unit = _unit;
+      data.current.pop = data.daily[1].pop;
 
       return data;
     } catch (error) {
@@ -58,13 +61,13 @@ const Model = (() => {
     }
   }
 
-	return {
-		unit,
-		getGeocode,
-		getWeather,
-		celsiusToFarenheit,
-		farenheitToCelsius,
-	};
+  return {
+    setUnit,
+    getGeocode,
+    getWeather,
+    celsiusToFarenheit,
+    farenheitToCelsius,
+  };
 })();
 
 export default Model;
