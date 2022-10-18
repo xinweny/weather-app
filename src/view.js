@@ -1,10 +1,10 @@
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 const cache = {};
 const importAll = (r) => r.keys().forEach((key) => {
 	cache[key] = r(key);
 });
-importAll(require.context('../assets/icons', true, /\.png$/));
+// importAll(require.context('../assets/icons', true, /\.png$/));
 
 const View = (() => {
   function _getElement(selector) {
@@ -46,6 +46,10 @@ const View = (() => {
     windSpeed: _getElement('#wind-speed'),
     hourlyForecast: _getElement('#hourly-forecast'),
     dailyForecast: _getElement('#daily-forecast'),
+    sunriseTime: _getElement('#sunrise-time'),
+    sunsetTime: _getElement('#sunset-time'),
+    uvi: _getElement('#uvi'),
+    pressure: _getElement('#pressure'),
 
     setText(element, text) { this[element].textContent = text; },
   };
@@ -62,6 +66,8 @@ const View = (() => {
 
   const _unixToDate = (unixTimestamp) => new Date(unixTimestamp * 1000);
 
+  const _unixToLocalTime = (unixTime, offset) => new Date((unixTime + offset) * 1000);
+
   function _displayWeatherData(data) {
     console.log(data);
 		const unitSymbol = _getUnitSymbol(data.unit);
@@ -76,6 +82,10 @@ const View = (() => {
     _e.setText('humidity', `${data.current.humidity}%`);
     _e.setText('pop', _formatPop(data.current.pop));
     _e.setText('windSpeed', `${data.current.wind_speed} ${(unitSymbol === 'C') ? 'km/h' : 'mph'}`);
+    _e.setText('sunriseTime', format(data.current.sunrise, 'h:mm aaa'));
+    _e.setText('sunsetTime', format(data.current.sunset, 'h:mm aaa'));
+    _e.setText('uvi', data.current.uvi);
+    _e.setText('pressure', `${data.current.pressure} hPa`);
 
 		_e.mainIcon.src = cache[`./${data.current.weather[0].icon}.png`];
   }
@@ -85,11 +95,10 @@ const View = (() => {
 		const unitSymbol = _getUnitSymbol(data.unit);
 
     for (const hrData of data.hourly.slice(13, 37)) {
-			console.log(hrData);
       const hrCard = _createElement('div', 'hourly-card');
 
       const hrTime = _createElement('p', 'hourly-time');
-      hrTime.textContent = format(_unixToDate(hrData.dt), 'iii do MMM yyy h:mm aaa');
+      hrTime.textContent = format(_unixToDate(hrData.dt), 'ha');
 
       const hrTemp = _createElement('p', 'hourly-temp temp');
       hrTemp.textContent = _formatTemp(hrData.temp, unitSymbol);
@@ -114,7 +123,7 @@ const View = (() => {
 		for (const dData of data.daily.slice(1)) {
 			const dCard = _createElement('div', 'daily-card');
 			const dTime = _createElement('p', 'daily-time');
-			dTime.textContent = format(_unixToDate(dData.dt), 'iii do MMM yyy');
+			dTime.textContent = format(_unixToDate(dData.dt), 'd MMM');
 
 			const dTempHigh = _createElement('p', 'daily-temp temp');
       dTempHigh.textContent = _formatTemp(dData.temp.max, unitSymbol);

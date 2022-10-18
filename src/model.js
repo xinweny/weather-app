@@ -10,8 +10,7 @@ const Model = (() => {
     _unit = unit;
   }
 
-  function _getLocalDateTime(offset) {
-    const date = new Date();
+  function _getLocalDateTime(date, offset) {
     const utc = date.getTime() + date.getTimezoneOffset() * 60000;
 
     const localTime = utc + (offset * 1000);
@@ -47,11 +46,19 @@ const Model = (() => {
       const data = await _getApiResponseData(`https://api.openweathermap.org/data/3.0/onecall?lat=${geoObj.lat}&lon=${geoObj.lon}&units=${_unit}&appid=${_apiKey}`);
 
       data.city_name = geoObj.name;
-      data.local_time = _getLocalDateTime(data.timezone_offset);
+      data.local_time = _getLocalDateTime(new Date(), data.timezone_offset);
       const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
       data.country_name = regionNames.of(geoObj.country);
       data.unit = _unit;
       data.current.pop = data.daily[1].pop;
+      data.current.sunrise = _getLocalDateTime(
+        new Date(data.current.sunrise * 1000),
+        data.timezone_offset,
+      );
+      data.current.sunset = _getLocalDateTime(
+        new Date(data.current.sunset * 1000),
+        data.timezone_offset,
+      );
 
       return data;
     } catch (error) {
