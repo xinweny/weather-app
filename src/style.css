@@ -72,20 +72,39 @@ form {
 .city-details {
 	display: grid;
 	grid-template-columns: auto auto;
-	column-gap: 8px;
+	column-gap: 16px;
+}
+
+.detail-card {
+	display: flex;
+	gap: 8px;
+}
+
+.detail-card > img {
+	width: 50px;
+	height: 50px;
+}
+
+
+#hourly-wrapper {
+	min-width: 0;
 }
 
 #hourly-forecast {
-	min-width: 0;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	overflow-x: auto;
 	gap: 16px;
-	align-self: center;
+	place-self: center;
 }
 
 .hourly-card {
 	margin: auto;
+}
+
+.hourly-icon {
+	width: 50px;
+	height: 50px;
 }
 
 #hourly-forecast::-webkit-scrollbar-track {
@@ -99,6 +118,10 @@ form {
 
 #daily-forecast-table {
 	text-align: center;
+}
+
+tr > * + * {
+	padding-left: 16px;
 }
 
 #footer {

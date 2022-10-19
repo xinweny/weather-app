@@ -4,7 +4,7 @@ const cache = {};
 const importAll = (r) => r.keys().forEach((key) => {
 	cache[key] = r(key);
 });
-// importAll(require.context('../assets/icons', true, /\.png$/));
+importAll(require.context('./assets/weather_icons', true, /\.svg$/));
 
 const View = (() => {
   function _getElement(selector) {
@@ -27,6 +27,8 @@ const View = (() => {
       parent.appendChild(child);
     }
   }
+
+  const _getIcon = (name) => cache[`./${name}_animated.svg`];
 
   const _e = {
     content: _getElement('#content'),
@@ -66,8 +68,6 @@ const View = (() => {
 
   const _unixToDate = (unixTimestamp) => new Date(unixTimestamp * 1000);
 
-  const _unixToLocalTime = (unixTime, offset) => new Date((unixTime + offset) * 1000);
-
   function _displayWeatherData(data) {
     console.log(data);
 		const unitSymbol = _getUnitSymbol(data.unit);
@@ -87,7 +87,7 @@ const View = (() => {
     _e.setText('uvi', data.current.uvi);
     _e.setText('pressure', `${data.current.pressure} hPa`);
 
-		_e.mainIcon.src = cache[`./${data.current.weather[0].icon}.png`];
+		_e.mainIcon.src = _getIcon(data.current.weather[0].icon);
   }
 
   function _displayHourlyData(data) {
@@ -103,8 +103,8 @@ const View = (() => {
       const hrTemp = _createElement('p', 'hourly-temp temp');
       hrTemp.textContent = _formatTemp(hrData.temp, unitSymbol);
 
-			const hrWeather = _createElement('p', 'hourly-icon icon');
-			hrWeather.textContent = hrData.weather[0].icon;
+			const hrWeather = _createElement('img', 'hourly-icon icon');
+			hrWeather.src = _getIcon(hrData.weather[0].icon);
 
       _appendChildren(hrCard, [
         hrTime,
@@ -142,8 +142,10 @@ const View = (() => {
       const dPop = _createElement('td', 'daily-pop');
       dPop.textContent = _formatPop(dData.pop);
 
-			const dWeather = _createElement('td', 'daily-icon icon');
-			dWeather.textContent = dData.weather[0].icon;
+			const dWeather = _createElement('td');
+      const img = _createElement('img', 'daily-icon icon');
+			img.src = _getIcon(dData.weather[0].icon);
+      dWeather.appendChild(img);
 
 			_appendChildren(dRow, [
         dTime,

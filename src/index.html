@@ -9,7 +9,7 @@
 		<div id="header">
 			<form action="GET" id="search-form">
 				<input type="text" name="location" placeholder="Search city" required>
-				<button id="submit-btn">Submit</button>
+				<button id="submit-btn"><img src="./assets/search.svg" alt="Search"></button>
 			</form>
 			<button id="toggle-btn" class="celsius">
 				<span class="bolded">ºC</span> / <span>ºF</span>
@@ -28,40 +28,66 @@
 				</div>
 				<div class="city-details">
 					<div class="detail-card">
-						<p>Feels like</p>
-						<p id="feels-like"></p>
+						<img src="./assets/thermometer.svg" alt="Thermometer">
+						<div>
+							<p>Feels like</p>
+							<p id="feels-like"></p>
+						</div>
 					</div>
 					<div class="detail-card">
-						<p>Humidity</p>
-						<p id="humidity"></p>
+						<img src="./assets/humidity.svg" alt="Humidity">
+						<div>
+							<p>Humidity</p>
+							<p id="humidity"></p>
+						</div>
 					</div>
 					<div class="detail-card">
-						<p>Chance of rain</p>
-						<p id="pop"></p>
+						<img src="./assets/umbrella.svg" alt="Umbrella">
+						<div>
+							<p>Chance of rain</p>
+							<p id="pop"></p>
+						</div>
 					</div>
 					<div class="detail-card">
-						<p>Wind</p>
-						<p id="wind-speed"></p>
+						<img src="./assets/wind.svg" alt="Wind">
+						<div>
+							<p>Wind</p>
+							<p id="wind-speed"></p>
+						</div>
 					</div>
 					<div class="detail-card">
-						<p>Sunrise</p>
-						<p id="sunrise-time"></p>
+						<img src="./assets/sunrise.svg" alt="Sunrise">
+						<div>
+							<p>Sunrise</p>
+							<p id="sunrise-time"></p>
+						</div>
 					</div>
 					<div class="detail-card">
-						<p>Sunset</p>
-						<p id="sunset-time"></p>
+						<img src="./assets/sunset.svg" alt="Sunset">
+						<div>
+							<p>Sunset</p>
+							<p id="sunset-time"></p>
+						</div>
 					</div>
 					<div class="detail-card">
-						<p>UVI</p>
-						<p id="uvi"></p>
+						<img src="./assets/uvi.svg" alt="UVI">
+						<div>
+							<p>UVI</p>
+							<p id="uvi"></p>
+						</div>
 					</div>
 					<div class="detail-card">
-						<p>Pressure</p>
-						<p id="pressure"></p>
+						<img src="./assets/barometer.svg" alt="Barometer">
+						<div>
+							<p>Pressure</p>
+							<p id="pressure"></p>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div id="hourly-forecast"></div>
+			<div id="hourly-wrapper">
+				<div id="hourly-forecast"></div>
+			</div>
 			<div id="daily-forecast">
 				<table id="daily-forecast-table">
 				</table>
