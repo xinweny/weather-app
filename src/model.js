@@ -38,7 +38,7 @@ const Model = (() => {
     try {
       const data = await _getApiResponseData(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${_apiKey}`);
 
-      if (data.length === 0) return Promise.reject(new Error(`No cities found for '${city}'.`));
+      if (data.length === 0) throw new Error(`No cities found for '${city}'.`);
 
       return data[0];
     } catch (error) {
@@ -68,8 +68,6 @@ const Model = (() => {
 
       return data;
     } catch (error) {
-      console.log(`No weather data found for '${geoObj.name}'`);
-
       return error;
     }
   }

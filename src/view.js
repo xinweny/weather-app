@@ -171,13 +171,13 @@ const View = (() => {
       const query = _e.searchInput.value;
 
       handler(query)
-        .then((data, rejected) => {
+        .then((data) => {
           if (!(data instanceof Error)) {
             _clearElement(_e.searchInput);
 
             displayAllData(data);
           } else {
-            console.log(rejected);
+            _e.searchInput.setCustomValidity(data.message);
           }
         });
     });
