@@ -19,12 +19,12 @@
 			<div id="summary-forecast">
 				<div class="city-summary">
 					<h2 id="location"></h2>
-					<h3 id="weather"></h3>
-					<h3 id="weather-description"></h3>
-					<img id="main-icon" src="#" alt="">
 					<p id="local-time"></p>
 					<p id="local-date"></p>
 					<h1 id="current-temperature" class="temp"></h1>
+					<img id="main-icon" src="#" alt="">
+					<h3 id="weather"></h3>
+					<p id="weather-description"></p>
 				</div>
 				<div class="city-details">
 					<div class="detail-card">
@@ -40,7 +40,7 @@
 						<p id="pop"></p>
 					</div>
 					<div class="detail-card">
-						<p>Wind speed</p>
+						<p>Wind</p>
 						<p id="wind-speed"></p>
 					</div>
 					<div class="detail-card">
@@ -62,7 +62,10 @@
 				</div>
 			</div>
 			<div id="hourly-forecast"></div>
-			<div id="daily-forecast"></div>
+			<div id="daily-forecast">
+				<table id="daily-forecast-table">
+				</table>
+			</div>
 		</div>
 		<div id="footer">
 			<p>Made by <a href="https://github.com/xinweny">xinweny</a> in 2022</p>

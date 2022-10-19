@@ -45,7 +45,7 @@ const View = (() => {
     pop: _getElement('#pop'),
     windSpeed: _getElement('#wind-speed'),
     hourlyForecast: _getElement('#hourly-forecast'),
-    dailyForecast: _getElement('#daily-forecast'),
+    dailyForecast: _getElement('#daily-forecast-table'),
     sunriseTime: _getElement('#sunrise-time'),
     sunsetTime: _getElement('#sunset-time'),
     uvi: _getElement('#uvi'),
@@ -81,7 +81,7 @@ const View = (() => {
     _e.setText('feelsLike', _formatTemp(data.current.feels_like, unitSymbol));
     _e.setText('humidity', `${data.current.humidity}%`);
     _e.setText('pop', _formatPop(data.current.pop));
-    _e.setText('windSpeed', `${data.current.wind_speed} ${(unitSymbol === 'C') ? 'km/h' : 'mph'}`);
+    _e.setText('windSpeed', `${data.current.wind_deg_cardinal} ${data.current.wind_speed} ${(unitSymbol === 'C') ? 'km/h' : 'mph'}`);
     _e.setText('sunriseTime', format(data.current.sunrise, 'h:mm aaa'));
     _e.setText('sunsetTime', format(data.current.sunset, 'h:mm aaa'));
     _e.setText('uvi', data.current.uvi);
@@ -120,28 +120,40 @@ const View = (() => {
 		_clearElement(_e.dailyForecast);
 		const unitSymbol = _getUnitSymbol(data.unit);
 
-		for (const dData of data.daily.slice(1)) {
-			const dCard = _createElement('div', 'daily-card');
-			const dTime = _createElement('p', 'daily-time');
-			dTime.textContent = format(_unixToDate(dData.dt), 'd MMM');
+    const dHeader = _createElement('tr', 'daily-header');
+    for (const headerText of ['', 'Weather', 'High', 'Low', 'Chance of rain']) {
+      const headerCell = _createElement('th');
+      headerCell.textContent = headerText;
+      dHeader.appendChild(headerCell);
+    }
+    _e.dailyForecast.appendChild(dHeader);
 
-			const dTempHigh = _createElement('p', 'daily-temp temp');
+		for (const dData of data.daily.slice(1)) {
+			const dRow = _createElement('tr', 'daily-row');
+			const dTime = _createElement('td', 'daily-time');
+			dTime.textContent = format(_unixToDate(dData.dt), 'iii d MMM');
+
+			const dTempHigh = _createElement('td', 'daily-temp temp');
       dTempHigh.textContent = _formatTemp(dData.temp.max, unitSymbol);
 			
-			const dTempLow = _createElement('p', 'daily-temp temp');
+			const dTempLow = _createElement('td', 'daily-temp temp');
       dTempLow.textContent = _formatTemp(dData.temp.min, unitSymbol);
 
-			const dWeather = _createElement('p', 'daily-icon icon');
+      const dPop = _createElement('td', 'daily-pop');
+      dPop.textContent = _formatPop(dData.pop);
+
+			const dWeather = _createElement('td', 'daily-icon icon');
 			dWeather.textContent = dData.weather[0].icon;
 
-			_appendChildren(dCard, [
+			_appendChildren(dRow, [
         dTime,
+        dWeather,
 				dTempHigh,
 				dTempLow,
-				dWeather,
+        dPop,
       ]);
 
-			_e.dailyForecast.appendChild(dCard);
+			_e.dailyForecast.appendChild(dRow);
 		}
   }
 

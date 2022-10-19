@@ -18,6 +18,11 @@ const Model = (() => {
     return new Date(localTime);
   }
 
+  function _getCardinalDirection(angle) {
+    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    return directions[Math.round(angle / 45) % 8];
+  }
+
   async function _getApiResponseData(queryURL) {
     try {
       const response = await fetch(queryURL, { mode: 'cors' });
@@ -59,6 +64,7 @@ const Model = (() => {
         new Date(data.current.sunset * 1000),
         data.timezone_offset,
       );
+      data.current.wind_deg_cardinal = _getCardinalDirection(data.current.wind_deg);
 
       return data;
     } catch (error) {
