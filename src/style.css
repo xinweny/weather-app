@@ -24,6 +24,9 @@ body {
 	padding: 32px;
 	display: grid;
 	grid-template-rows: auto auto auto;
+	gap: 32px;
+	overflow-y: auto;
+	min-height: 0px;
 }
 
 .bolded {
@@ -31,21 +34,26 @@ body {
 }
 
 #header {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	gap: 32px;
 	padding: 16px;
+	background-color: rgba(255, 255, 255, 0.2);
+	place-items: center;
 }
 
 input {
 	appearance: none;
-	padding: 4px 8px;
-	border-radius: 16px;
+	padding: 8px 12px;
+	border-radius: 24px;
+	border: none;
+	width: 100%;
 }
 
 form {
 	position: relative;
+	width: min(100%, 500px);
+	display: flex;
 }
 
 #submit-btn {
@@ -58,9 +66,26 @@ form {
 	background-color: transparent;
 }
 
+#submit-btn img {
+	background-color: white;
+	padding: 2px 0px 2px 4px;
+}
+
 #toggle-btn {
 	padding: 4px 8px;
 	border-radius: 16px;
+	background-color: transparent;
+	border: 2px solid black;
+}
+
+.morning #toggle-btn, .day #toggle-btn, .evening #toggle-btn {
+	color: black;
+	border-color: black;
+}
+
+.night #toggle-btn {
+	color: white;
+	border-color: white;
 }
 
 #summary-forecast {
@@ -72,7 +97,7 @@ form {
 .city-details {
 	display: grid;
 	grid-template-columns: auto auto;
-	column-gap: 16px;
+	gap: 16px;
 }
 
 .detail-card {
@@ -130,4 +155,33 @@ tr > * + * {
 	align-items: center;
 	justify-content: center;
 	gap: 8px;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.morning {
+	background: linear-gradient(0deg, rgba(37,218,221,1) 0%, rgba(255,236,170,1) 100%);
+	color: black;
+}
+
+.morning a, .day a, .evening a {
+	color: black;
+}
+
+.day {
+	background: linear-gradient(0deg, rgba(164,181,255,1) 0%, rgba(167,253,255,1) 100%);
+	color: black;
+}
+
+.evening {
+  background: linear-gradient(0deg, rgba(255,74,74,1) 0%, rgba(255,207,104,1) 100%);
+	color: black;
+}
+
+.night {
+	background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,2,120,1) 100%);
+	color: white;
+}
+
+.night a {
+	color: white;
 }

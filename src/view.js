@@ -159,7 +159,22 @@ const View = (() => {
 		}
   }
 
+  function _setBackgroundColor(time) {
+    const hour = time.getHours();
+
+    if (hour >= 5 && hour < 9) {
+      document.body.className = 'morning';
+    } else if (hour >= 9 && hour < 16) {
+      document.body.className = 'day';
+    } else if (hour >= 16 && hour < 20) {
+      document.body.className = 'evening';
+    } else {
+      document.body.className = 'night';
+    }
+  }
+
 	function displayAllData(data) {
+    _setBackgroundColor(data.local_time);
 		_displayWeatherData(data);
 		_displayHourlyData(data);
 		_displayDailyData(data);

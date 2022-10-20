@@ -7,6 +7,7 @@
 <body>
 	<div id="root">
 		<div id="header">
+			<h1>Weather</h1>
 			<form action="GET" id="search-form">
 				<input type="text" name="location" placeholder="Search city" required>
 				<button id="submit-btn"><img src="./assets/search.svg" alt="Search"></button>
@@ -19,8 +20,10 @@
 			<div id="summary-forecast">
 				<div class="city-summary">
 					<h2 id="location"></h2>
-					<p id="local-time"></p>
-					<p id="local-date"></p>
+					<div class="time-container">
+						<p id="local-time"></p>
+						<p id="local-date"></p>
+					</div>
 					<h1 id="current-temperature" class="temp"></h1>
 					<img id="main-icon" src="#" alt="">
 					<h3 id="weather"></h3>
