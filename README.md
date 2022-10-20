@@ -1,6 +1,6 @@
 # Weather
 
-Weather app made using vanilla JS, HTML and CSS and bundled with webpack. Display weather information using data from the OpenWeather API.
+Display weather information using data from the OpenWeather API. Made with vanilla JS, HTML and CSS and bundled with webpack. 
 
 Check out the live demo [here](https://xinweny.github.io/weather-app/)! 🌦
 
