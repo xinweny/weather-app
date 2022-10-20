@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 
 const cache = {};
 const importAll = (r) => r.keys().forEach((key) => {
-	cache[key] = r(key);
+  cache[key] = r(key);
 });
 importAll(require.context('./assets/weather_icons', true, /\.svg$/));
 
@@ -12,7 +12,8 @@ const View = (() => {
   }
 
   function _clearElement(element) {
-    element.textContent = '';
+    const e = element;
+    e.textContent = '';
   }
 
   function _createElement(tag, cls) {
@@ -38,7 +39,7 @@ const View = (() => {
     location: _getElement('#location'),
     weather: _getElement('#weather'),
     weatherDesc: _getElement('#weather-description'),
-		mainIcon: _getElement('#main-icon'),
+    mainIcon: _getElement('#main-icon'),
     localTime: _getElement('#local-time'),
     localDate: _getElement('#local-date'),
     currentTemp: _getElement('#current-temperature'),
@@ -62,17 +63,17 @@ const View = (() => {
     return (unit === 'metric') ? 'C' : 'F';
   }
 
-	const _capitalize = (string) => string[0].toUpperCase() + string.slice(1);
+  const _capitalize = (string) => string[0].toUpperCase() + string.slice(1);
 
   const _formatTemp = (temp, unit) => `${Math.round(temp)}º${unit}`;
 
-	const _formatPop = (pop) => `${Math.round(pop * 100)}%`;
+  const _formatPop = (pop) => `${Math.round(pop * 100)}%`;
 
   const _unixToDate = (unixTimestamp) => new Date(unixTimestamp * 1000);
 
   function _displayWeatherData(data) {
     console.log(data);
-		const unitSymbol = _getUnitSymbol(data.unit);
+    const unitSymbol = _getUnitSymbol(data.unit);
 
     _e.setText('location', `${data.city_name}, ${data.country_name}`);
     _e.setText('weather', data.current.weather[0].main);
@@ -89,14 +90,14 @@ const View = (() => {
     _e.setText('uvi', data.current.uvi);
     _e.setText('pressure', `${data.current.pressure} hPa`);
     _e.setText('dewPoint', _formatTemp(data.current.dew_point, unitSymbol));
-    _e.setText('visibility', `${data.current.visibility}m`);
+    _e.setText('visibility', `${data.current.visibility} m`);
 
-		_e.mainIcon.src = _getIcon(data.current.weather[0].icon);
+    _e.mainIcon.src = _getIcon(data.current.weather[0].icon);
   }
 
   function _displayHourlyData(data) {
-		_clearElement(_e.hourlyForecast);
-		const unitSymbol = _getUnitSymbol(data.unit);
+    _clearElement(_e.hourlyForecast);
+    const unitSymbol = _getUnitSymbol(data.unit);
 
     for (const hrData of data.hourly.slice(0, 24)) {
       const hrCard = _createElement('div', 'hourly-card');
@@ -107,13 +108,13 @@ const View = (() => {
       const hrTemp = _createElement('p', 'hourly-temp temp');
       hrTemp.textContent = _formatTemp(hrData.temp, unitSymbol);
 
-			const hrWeather = _createElement('img', 'hourly-icon icon');
-			hrWeather.src = _getIcon(hrData.weather[0].icon);
+      const hrWeather = _createElement('img', 'hourly-icon icon');
+      hrWeather.src = _getIcon(hrData.weather[0].icon);
 
       _appendChildren(hrCard, [
         hrTime,
         hrTemp,
-				hrWeather,
+        hrWeather,
       ]);
 
       _e.hourlyForecast.appendChild(hrCard);
@@ -121,8 +122,8 @@ const View = (() => {
   }
 
   function _displayDailyData(data) {
-		_clearElement(_e.dailyForecast);
-		const unitSymbol = _getUnitSymbol(data.unit);
+    _clearElement(_e.dailyForecast);
+    const unitSymbol = _getUnitSymbol(data.unit);
 
     const dHeader = _createElement('tr', 'daily-header');
     for (const headerText of ['', 'Weather', 'High', 'Low', 'Chance of rain']) {
@@ -132,35 +133,35 @@ const View = (() => {
     }
     _e.dailyForecast.appendChild(dHeader);
 
-		for (const dData of data.daily.slice(1)) {
-			const dRow = _createElement('tr', 'daily-row');
-			const dTime = _createElement('td', 'daily-time');
-			dTime.textContent = format(_unixToDate(dData.dt), 'iii d MMM');
+    for (const dData of data.daily.slice(1)) {
+      const dRow = _createElement('tr', 'daily-row');
+      const dTime = _createElement('td', 'daily-time');
+      dTime.textContent = format(_unixToDate(dData.dt), 'iii d MMM');
 
-			const dTempHigh = _createElement('td', 'daily-temp temp');
+      const dTempHigh = _createElement('td', 'daily-temp temp');
       dTempHigh.textContent = _formatTemp(dData.temp.max, unitSymbol);
-			
-			const dTempLow = _createElement('td', 'daily-temp temp');
+
+      const dTempLow = _createElement('td', 'daily-temp temp');
       dTempLow.textContent = _formatTemp(dData.temp.min, unitSymbol);
 
       const dPop = _createElement('td', 'daily-pop');
       dPop.textContent = _formatPop(dData.pop);
 
-			const dWeather = _createElement('td');
+      const dWeather = _createElement('td');
       const img = _createElement('img', 'daily-icon icon');
-			img.src = _getIcon(dData.weather[0].icon);
+      img.src = _getIcon(dData.weather[0].icon);
       dWeather.appendChild(img);
 
-			_appendChildren(dRow, [
+      _appendChildren(dRow, [
         dTime,
         dWeather,
-				dTempHigh,
-				dTempLow,
+        dTempHigh,
+        dTempLow,
         dPop,
       ]);
 
-			_e.dailyForecast.appendChild(dRow);
-		}
+      _e.dailyForecast.appendChild(dRow);
+    }
   }
 
   function _setBackgroundColor(time) {
@@ -177,12 +178,12 @@ const View = (() => {
     }
   }
 
-	function displayAllData(data) {
+  function displayAllData(data) {
     _setBackgroundColor(data.local_time);
-		_displayWeatherData(data);
-		_displayHourlyData(data);
-		_displayDailyData(data);
-	}
+    _displayWeatherData(data);
+    _displayHourlyData(data);
+    _displayDailyData(data);
+  }
 
   function bindSearchForm(handler) {
     _e.searchForm.addEventListener('submit', (event) => {

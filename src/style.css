@@ -94,7 +94,6 @@ form {
 #summary-forecast {
 	display: flex;
 	justify-content: space-around;
-	align-items: center;
 	flex-wrap: wrap;
 	gap: 32px;
 }
@@ -133,6 +132,7 @@ form {
 	display: grid;
 	grid-template-columns: auto auto;
 	gap: 16px;
+	place-content: center;
 }
 
 .detail-card {
