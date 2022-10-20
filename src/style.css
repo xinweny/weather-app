@@ -229,6 +229,12 @@ tr > * + * {
 	background-image: url('./assets/github-white.svg');
 }
 
+#github-logo a {
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
 .morning {
 	background: linear-gradient(0deg, rgba(37,218,221,1) 0%, rgba(255,236,170,1) 100%);
 	color: black;
