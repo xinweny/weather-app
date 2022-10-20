@@ -10,7 +10,8 @@ const Model = (() => {
     _unit = unit;
   }
 
-  function _getLocalDateTime(date, offset) {
+  function _getLocalDateTime(time, offset) {
+    const date = (time) ? new Date(time * 1000) : new Date();
     const utc = date.getTime() + date.getTimezoneOffset() * 60000;
 
     const localTime = utc + (offset * 1000);
@@ -51,20 +52,18 @@ const Model = (() => {
       const data = await _getApiResponseData(`https://api.openweathermap.org/data/3.0/onecall?lat=${geoObj.lat}&lon=${geoObj.lon}&units=${_unit}&appid=${_apiKey}`);
 
       data.city_name = geoObj.name;
-      data.local_time = _getLocalDateTime(new Date(), data.timezone_offset);
+      data.local_time = _getLocalDateTime(null, data.timezone_offset);
       const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
       data.country_name = regionNames.of(geoObj.country);
       data.unit = _unit;
       data.current.pop = data.daily[1].pop;
-      data.current.sunrise = _getLocalDateTime(
-        new Date(data.current.sunrise * 1000),
-        data.timezone_offset,
-      );
-      data.current.sunset = _getLocalDateTime(
-        new Date(data.current.sunset * 1000),
-        data.timezone_offset,
-      );
+      data.current.sunrise = _getLocalDateTime(data.current.sunrise, data.timezone_offset);
+      data.current.sunset = _getLocalDateTime(data.current.sunset, data.timezone_offset);
       data.current.wind_deg_cardinal = _getCardinalDirection(data.current.wind_deg);
+
+      for (const hrData of data.hourly) {
+        hrData.local_time = _getLocalDateTime(hrData.dt, data.timezone_offset);
+      }
 
       return data;
     } catch (error) {

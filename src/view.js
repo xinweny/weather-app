@@ -1,4 +1,4 @@
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 
 const cache = {};
 const importAll = (r) => r.keys().forEach((key) => {
@@ -76,7 +76,7 @@ const View = (() => {
     _e.setText('weather', data.current.weather[0].main);
     _e.setText('weatherDesc', _capitalize(data.current.weather[0].description));
     _e.setText('localTime', format(data.local_time, 'h:mm aaa'));
-    _e.setText('localDate', format(data.local_time, 'iii do MMM yyyy'));
+    _e.setText('localDate', format(data.local_time, "iii do MMM ''yy"));
     _e.setText('currentTemp', _formatTemp(data.current.temp, unitSymbol));
     _e.setText('feelsLike', _formatTemp(data.current.feels_like, unitSymbol));
     _e.setText('humidity', `${data.current.humidity}%`);
@@ -94,11 +94,11 @@ const View = (() => {
 		_clearElement(_e.hourlyForecast);
 		const unitSymbol = _getUnitSymbol(data.unit);
 
-    for (const hrData of data.hourly.slice(13, 37)) {
+    for (const hrData of data.hourly.slice(0, 24)) {
       const hrCard = _createElement('div', 'hourly-card');
 
       const hrTime = _createElement('p', 'hourly-time');
-      hrTime.textContent = format(_unixToDate(hrData.dt), 'ha');
+      hrTime.textContent = format(hrData.local_time, 'haaa');
 
       const hrTemp = _createElement('p', 'hourly-temp temp');
       hrTemp.textContent = _formatTemp(hrData.temp, unitSymbol);
@@ -122,7 +122,7 @@ const View = (() => {
 
     const dHeader = _createElement('tr', 'daily-header');
     for (const headerText of ['', 'Weather', 'High', 'Low', 'Chance of rain']) {
-      const headerCell = _createElement('th');
+      const headerCell = _createElement('th', '');
       headerCell.textContent = headerText;
       dHeader.appendChild(headerCell);
     }

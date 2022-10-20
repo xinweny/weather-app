@@ -22,17 +22,6 @@
 		</div>
 		<div id="content">
 			<div id="summary-forecast">
-				<div class="city-summary">
-					<h2 id="location"></h2>
-					<div class="time-container">
-						<p id="local-time"></p>
-						<p id="local-date"></p>
-					</div>
-					<h1 id="current-temperature" class="temp"></h1>
-					<img id="main-icon" src="#" alt="">
-					<h3 id="weather"></h3>
-					<p id="weather-description"></p>
-				</div>
 				<div class="city-details">
 					<div class="detail-card">
 						<img src="./assets/thermometer.svg" alt="Thermometer">
@@ -91,17 +80,31 @@
 						</div>
 					</div>
 				</div>
+				<div class="city-summary">
+					<h2 id="location"></h2>
+					<p id="local-date"></p>
+					<p id="local-time"></p>
+					<img id="main-icon" src="#" alt="">
+					<div class="weather-container">
+						<div class="weather-info">
+							<h3 id="weather"></h3>
+							<p id="weather-description"></p>
+						</div>
+						<h1 id="current-temperature" class="temp"></h1>
+					</div>
+				</div>
+				<div id="daily-forecast">
+				<table id="daily-forecast-table">
+				</table>
+			</div>
 			</div>
 			<div id="hourly-wrapper">
 				<div id="hourly-forecast"></div>
 			</div>
-			<div id="daily-forecast">
-				<table id="daily-forecast-table">
-				</table>
-			</div>
 		</div>
 		<div id="footer">
 			<p>Made by <a href="https://github.com/xinweny">xinweny</a> in 2022</p>
+			<div id="github-logo"></div>
 		</div>
 	</div>
 </body>
