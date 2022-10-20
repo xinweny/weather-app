@@ -37,7 +37,7 @@ const Model = (() => {
 
   async function getGeocode(city) {
     try {
-      const data = await _getApiResponseData(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${_apiKey}`);
+      const data = await _getApiResponseData(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${_apiKey}`);
 
       if (data.length === 0) throw new Error(`No cities found for '${city}'.`);
 
