@@ -42,6 +42,13 @@ body {
 	place-items: center;
 }
 
+.logo-title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+
 input {
 	appearance: none;
 	padding: 8px 12px;
