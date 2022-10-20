@@ -39,7 +39,6 @@ body {
 	grid-template-columns: auto 1fr auto;
 	gap: 32px;
 	padding: 16px;
-	background-color: rgba(255, 255, 255, 0.2);
 	place-items: center;
 }
 
@@ -100,9 +99,14 @@ form {
 	gap: 32px;
 }
 
+.city-summary {
+	width: 300px;
+}
+
 #location {
 	text-align: center;
 	font-weight: bolder;
+	font-size: 28px;
 }
 
 #local-time, #local-date {
@@ -111,8 +115,10 @@ form {
 }
 
 #main-icon {
-	width: 275px;
-	height: 275px;
+	width: 250px;
+	height: 250px;
+	margin: 0 auto;
+	display: block;
 }
 
 .weather-container {
@@ -161,7 +167,6 @@ form {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	padding-bottom: 8px;
 }
 
 .hourly-card p:first-child {
@@ -177,9 +182,8 @@ form {
 	height: 50px;
 }
 
-#hourly-forecast::-webkit-scrollbar-track {
-	background: transparent;
-	border: none;
+#hourly-forecast::-webkit-scrollbar {
+	display: none;
 }
 
 #daily-forecast {
@@ -216,7 +220,6 @@ tr > * + * {
 	align-items: center;
 	justify-content: center;
 	gap: 8px;
-	background-color: rgba(255, 255, 255, 0.2);
 }
 
 #github-logo {
@@ -261,6 +264,19 @@ tr > * + * {
 
 .night a {
 	color: white;
+}
+
+.bg-col {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.night .bg-col {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+#content .bg-col {
+	padding: 16px;
+	border-radius: 16px;
 }
 
 @media(max-width: 1185px) {

@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div id="root">
-		<div id="header">
+		<div id="header" class="bg-col">
 			<div class="logo-title">
 				<img src="./assets/logo.png" alt="Logo">
 				<h1>Weather</h1>
@@ -22,7 +22,7 @@
 		</div>
 		<div id="content">
 			<div id="summary-forecast">
-				<div class="city-details">
+				<div class="city-details bg-col">
 					<div class="detail-card">
 						<img src="./assets/thermometer.svg" alt="Thermometer">
 						<div>
@@ -79,8 +79,22 @@
 							<p id="pressure"></p>
 						</div>
 					</div>
+					<div class="detail-card">
+						<img src="./assets/thermometer-raindrop.svg" alt="Barometer">
+						<div>
+							<p>Dew point</p>
+							<p id="dew-point" class="temp"></p>
+						</div>
+					</div>
+					<div class="detail-card">
+						<img src="./assets/compass.svg" alt="Barometer">
+						<div>
+							<p>Visibility</p>
+							<p id="visibility"></p>
+						</div>
+					</div>
 				</div>
-				<div class="city-summary">
+				<div class="city-summary bg-col">
 					<h2 id="location"></h2>
 					<p id="local-date"></p>
 					<p id="local-time"></p>
@@ -94,15 +108,15 @@
 					</div>
 				</div>
 				<div id="daily-forecast">
-				<table id="daily-forecast-table">
+				<table id="daily-forecast-table" class="bg-col">
 				</table>
 			</div>
 			</div>
 			<div id="hourly-wrapper">
-				<div id="hourly-forecast"></div>
+				<div id="hourly-forecast" class="bg-col"></div>
 			</div>
 		</div>
-		<div id="footer">
+		<div id="footer" class="bg-col">
 			<p>Made by <a href="https://github.com/xinweny">xinweny</a> in 2022</p>
 			<div id="github-logo">
 				<a href="https://github.com/xinweny/weather-app"></a>

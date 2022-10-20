@@ -52,6 +52,8 @@ const View = (() => {
     sunsetTime: _getElement('#sunset-time'),
     uvi: _getElement('#uvi'),
     pressure: _getElement('#pressure'),
+    dewPoint: _getElement('#dew-point'),
+    visibility: _getElement('#visibility'),
 
     setText(element, text) { this[element].textContent = text; },
   };
@@ -86,6 +88,8 @@ const View = (() => {
     _e.setText('sunsetTime', format(data.current.sunset, 'h:mm aaa'));
     _e.setText('uvi', data.current.uvi);
     _e.setText('pressure', `${data.current.pressure} hPa`);
+    _e.setText('dewPoint', _formatTemp(data.current.dew_point, unitSymbol));
+    _e.setText('visibility', `${data.current.visibility}m`);
 
 		_e.mainIcon.src = _getIcon(data.current.weather[0].icon);
   }
