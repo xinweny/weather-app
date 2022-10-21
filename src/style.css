@@ -94,12 +94,15 @@ form {
 #summary-forecast {
 	display: flex;
 	justify-content: space-around;
+	align-items: stretch;
 	flex-wrap: wrap;
 	gap: 32px;
 }
 
 .city-summary {
 	width: 300px;
+	display: grid;
+	place-content: center;
 }
 
 #location {
@@ -187,7 +190,8 @@ form {
 }
 
 #daily-forecast {
-	place-self: center;
+	display: flex;
+	align-items: stretch;
 }
 
 #daily-forecast-table {
@@ -210,8 +214,8 @@ tr > * + * {
 }
 
 .daily-icon {
-	width: 45px;
-	height: 45px;
+	width: 50px;
+	height: 50px;
 }
 
 #footer {
