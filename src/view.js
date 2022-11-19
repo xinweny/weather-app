@@ -72,7 +72,6 @@ const View = (() => {
   const _unixToDate = (unixTimestamp) => new Date(unixTimestamp * 1000);
 
   function _displayWeatherData(data) {
-    console.log(data);
     const unitSymbol = _getUnitSymbol(data.unit);
 
     _e.setText('location', `${data.city_name}, ${data.country_name}`);
@@ -193,13 +192,17 @@ const View = (() => {
       handler(query)
         .then((data) => {
           if (!(data instanceof Error)) {
-            _clearElement(_e.searchInput);
-
             displayAllData(data);
           } else {
             _e.searchInput.setCustomValidity(data.message);
+            _e.searchInput.reportValidity();
+            _e.searchInput.value = '';
           }
         });
+    });
+
+    _e.searchForm.addEventListener('input', () => {
+      _e.searchInput.setCustomValidity('');
     });
   }
 
